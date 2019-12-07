@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Bringing it Together!</title>
+    <title>Node-MongoDB-Project</title>
 </head>
 <style>
     thead {
@@ -33,49 +33,194 @@
 
     header {
         display: block;
-        color: gray;
         text-align: center;
     }
 </style>
 
-<body>
+<body style="background-color: burlywood;">
     <article>
         <header>
-            <h1>Node js and Mongo DB Final Project</h1>
+            <h1>Advanced Data Management </h1>
+            <h2>Node js and Mongo DB Final Project</h2>
     </article>
     <br /><br />
+    <!-- Query One Block Begins -->
     <div>
-        <button id="qb1">Query 1</button>
-        <h4>Displaying the oldest employees</h4>
+        <h4>Click the button below to execute the query to display the oldest male and female employee.</h4>
     </div>
     <div>
-        <button id="qb2">Query 2</button>
-        <h4>Number of Employees in each department</h4>
+        <button id="q1">Query 1</button>
+    </div>
+    <!-- Query One Block Ends -->
+
+    <!-- Query Two Block Begins -->
+    <div>
+        <h4>Click the button below to execute the query to display the number of employees in each department.</h4>
     </div>
     <div>
-        <button id="qb3">Query 3</button>
-        <h4>Breakdown of Department managers</h4>
+        <button id="q2">Query 2</button>
+    </div>
+    <!-- Query Two Block Ends -->
+
+    <!-- Query Three Block Begins -->
+    <div>
+        <h4>Click the button below to execute the query to display the breakdown of department managers by gender.</h4>
     </div>
     <div>
-        <button id="qb4">Query 4</button>
-        <h4>Displaying the department with highest paid employee</h4>
+        <button id="q3">Query 3</button>
+    </div>
+    <!-- Query Three Block Ends -->
+
+    <!-- Query Four Block Begins -->
+    <div>
+        <h4>Click the button below to execute the query to display the department with highest paid employee(male and
+            female)</h4>
     </div>
     <div>
-        <button id="qb5">Query 5</button>
-        <h4>Average duration of Title</h4>
+        <button id="q4">Query 4</button>
+    </div>
+    <!-- Query Four Block Ends -->
+
+    <!-- Query Five Block Begins -->
+    <div>
+        <h4>Click the button below to execute the query to display the average duration of each title</h4>
     </div>
     <div>
-        <p id="queryheading">
+        <button id="q5">Query 5</button>
+    </div>
+    <!-- Query Five Block Ends -->
+
+    <!-- View Results Block Begins -->
+    <div>
+        <p id="title">
         </p>
     </div>
     <div>
-        <p id="queryresult">
+        <p id="results">
         </p>
     </div>
+    <!-- View Results Block Ends -->
+
+    <!-- External Scripts Begins -->
     <link rel="stylesheet" href="cosbootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="client.js" defer></script>
+    <!-- External Scripts Ends -->
+
+    <!-- Internal Script Begins -->
+    <script>
+        // Getting buttons by id to call the respective function on click
+        const query1 = document.getElementById('q1');
+        const query2 = document.getElementById('q2');
+        const query3 = document.getElementById('q3');
+        const query4 = document.getElementById('q4');
+        const query5 = document.getElementById('q5');
+
+        // Function triggered on query 1 button click
+        query1.addEventListener('click', function (e) {
+            fetch('/queryOne', { method: 'GET' })
+                .then(res => res.json())
+                .then(function (response) {
+                    var result = JSON.parse(JSON.stringify(response));
+                    var table = "";
+                    table += "<table><thead><tr><th>Gender</th><th>First Name</th><th>Last Name</th><th>Date of Birth</th></tr></thead><tbody>";
+                    for (var i = 0; i < result.length; i++) {
+                        table += "<tr><td>" + result[i]["_id"] + "</td>" + "<td>" + result[i]["First Name"] + "</td>" + "<td>" + result[i]["Last Name"] + "</td>" + "<td>" + result[i]["Date of Birth"] + "</td></tr>";
+                    }
+                    table += "</tbody></table>";
+                    document.getElementById("title").innerHTML = "Displaying results for Query 1 - Oldest Employee Male and Female";
+                    document.getElementById("results").innerHTML = table;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        });
+
+        // Function triggered on query 1 button click
+        query2.addEventListener('click', function (e) {
+            console.log('button2 was clicked');
+            fetch('/queryTwo', { method: 'GET' })
+                .then(res => res.json())
+                .then(function (response) {
+                    var result = JSON.parse(JSON.stringify(response));
+                    var table = "";
+                    table += "<table><thead><tr><th>Department Id</th><th>Count</th></tr></thead><tbody>";
+                    for (var i = 0; i < result.length; i++) {
+                        table += "<tr><td>" + result[i]["_id"] + "</td>" + "<td>" + result[i]["count"] + "</td></tr>";
+                    }
+                    table += "</tbody></table>";
+                    document.getElementById("title").innerHTML = "Displaying results for query 2 -  Number of employees in each department";
+                    document.getElementById("results").innerHTML = table;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        });
+
+        // Function triggered on query 3 button click
+        query3.addEventListener('click', function (e) {
+            console.log('button3 was clicked');
+            fetch('/queryThree', { method: 'GET' })
+                .then(res => res.json())
+                .then(function (response) {
+                    var result = JSON.parse(JSON.stringify(response));
+                    var table = "";
+                    table += "<table><thead><tr><th>Manager Department</th><th>Gender</th><th>Count</th></tr></thead><tbody>";
+                    for (var i = 0; i < result.length; i++) {
+                        table += "<tr><td>" + result[i]._id["dept"] + "</td>" + "<td>" + result[i]._id["gender"] + "</td>" + "<td>" + result[i]["count"] + "</td></tr>";
+                    }
+                    table += "</tbody></table>";
+                    document.getElementById("title").innerHTML = "Displaying results for Query 3 - Breakdown of department managers by gender";
+                    document.getElementById("results").innerHTML = table;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        });
+
+        // Function triggered on query 4 button click
+        query4.addEventListener('click', function (e) {
+            console.log('button4 was clicked');
+            fetch('/queryFour', { method: 'GET' })
+                .then(res => res.json())
+                .then(function (response) {
+                    var result = JSON.parse(JSON.stringify(response));
+                    var table = "";
+                    table += "<table><thead><tr><th>Department</th><th>Gender</th><th>Salary</th></tr></thead><tbody>";
+                    for (var i = 0; i < result.length; i++) {
+                        table += "<tr><td>" + result[i]["d"] + "</td>" + "<td>" + result[i]["_id"] + "</td>" + "<td>" + result[i]["s"] + "</td></tr>";
+                    }
+                    table += "</tbody></table>";
+                    document.getElementById("title").innerHTML = "Displaying results for Query 4 - Department that has the highest paid employee (male and female)";
+                    document.getElementById("results").innerHTML = table;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        });
+
+        // Function triggered on query 5 button click
+        query5.addEventListener('click', function (e) {
+            console.log('button5 was clicked');
+            fetch('/queryFive', { method: 'GET' })
+                .then(res => res.json())
+                .then(function (response) {
+                    var result = JSON.parse(JSON.stringify(response));
+                    var table = "";
+                    table += "<table><thead><tr><th>Designation</th><th>Tenure in Years</th></tr></thead><tbody>";
+                    for (var i = 0; i < result.length; i++) {
+                        table += "<tr><td>" + result[i]["_id"] + "</td>" + "<td>" + result[i]["Floored"] + "</td></tr>";
+                    }
+                    table += "</tbody></table>";
+                    document.getElementById("title").innerHTML = "Displaying results for Query 5 - average duration of each title";
+                    document.getElementById("results").innerHTML = table;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        });
+    </script>
+    <!-- Internal Script Ends -->
 </body>
 
 </html>
