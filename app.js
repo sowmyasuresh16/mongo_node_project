@@ -8,7 +8,7 @@ global.win = document.defaultView;
 
 var app = express()
 const MongoClient = require('mongodb').MongoClient;
-const index = require('./static/client.js');
+// const index = require('./static/client.js');
 const assert = require('assert');
 app.set('port', (process.env.PORT || 3000))
 app.listen(app.get('port'), function () {
